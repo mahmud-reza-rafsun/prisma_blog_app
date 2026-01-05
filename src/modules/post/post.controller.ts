@@ -20,7 +20,24 @@ const createPost = async (req: Request, res: Response) => {
     }
 }
 
+const getAllPost = async (req: Request, res: Response) => {
+    try {
+        const { search } = req.query
+        const searchStr = typeof search === "string" ? search : undefined
+        const result = await postService.getAllPost({ search: searchStr })
+        res.status(200).json({
+            data: result
+        })
+    } catch (error: any) {
+        res.status(400).json({
+            error: "Retrive all post failed",
+            details: error,
+        })
+    }
+}
+
 
 export const postController = {
-    createPost
+    createPost,
+    getAllPost
 }
