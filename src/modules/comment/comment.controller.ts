@@ -6,7 +6,7 @@ const createComment = async (req: Request, res: Response) => {
         const user = req.user;
         req.body.authorId = user?.id
         const result = await commentService.createComment(req.body);
-        res.send(result)
+        res.status(200).json(result)
     } catch (error: any) {
         res.status(400).json({
             error: "Comment creation failed",
@@ -28,7 +28,21 @@ const getCommentById = async (req: Request, res: Response) => {
     }
 }
 
+const getCommentByAuthor = async (req: Request, res: Response) => {
+    try {
+        const { authorId } = req.params;
+        const result = await commentService.getCommentByAuthor(authorId as string);
+        res.send(result)
+    } catch (error: any) {
+        res.status(400).json({
+            error: "Author data fetched failed",
+            details: error,
+        })
+    }
+}
+
 export const commentController = {
     createComment,
-    getCommentById
+    getCommentById,
+    getCommentByAuthor
 }
