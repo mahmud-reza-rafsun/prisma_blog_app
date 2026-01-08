@@ -7,6 +7,8 @@ const router = expres.Router();
 
 router.get("/", postController.getAllPost)
 
+router.get("/:postId", postController.getAllPostById)
+
 router.post("/", auth(UserRole.USER), postController.createPost);
 
 export const postRoute = router;
