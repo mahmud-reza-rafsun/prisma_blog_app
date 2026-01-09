@@ -72,7 +72,8 @@ const updateComment = async (req: Request, res: Response) => {
 
 const modarateComment = async (req: Request, res: Response) => {
     try {
-        const result = await commentService.modarateComment();
+        const { commentId } = req.params
+        const result = await commentService.modarateComment(commentId as string, req.body);
         res.status(200).send(result)
     } catch (error: any) {
         res.status(400).json({
