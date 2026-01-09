@@ -157,18 +157,71 @@ const getPostById = async (postId: string) => {
 }
 
 const getMyPost = async (authorId: string) => {
+    await prisma.user.findUniqueOrThrow({
+        where: {
+            id: authorId,
+            status: "ACTIVE"
+        },
+        select: {
+            id: true,
+        }
+    });
     const result = await prisma.post.findMany({
         where: {
             authorId
         },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
+        include: {
+            _count: {
+                select: {
+                    comments: true
+                }
+            }
+        }
     });
-    return result
+
+    // const total = await prisma.post.aggregate({
+    //     _count: {
+    //         id: true
+    //     },
+    //     where: {
+    //         authorId
+    //     }
+    // });
+    return {
+        result,
+    }
+}
+
+const updateMyPost = async (postId: string, data: Partial<Post>, authorId: string) => {
+    const postData = await prisma.post.findFirstOrThrow({
+        where: {
+            id: postId,
+            authorId
+        },
+        select: {
+            id: true,
+            authorId: true
+        }
+    })
+
+    if (!postData) {
+        throw new Error("Post data not found")
+    }
+
+    return await prisma.post.update({
+        where: {
+            id: postId,
+            authorId
+        },
+        data
+    })
 }
 
 export const postService = {
     createPost,
     getAllPost,
     getPostById,
-    getMyPost
+    getMyPost,
+    updateMyPost
 }

@@ -13,4 +13,6 @@ router.get("/:postId", postController.getAllPostById)
 
 router.post("/", auth(UserRole.USER, UserRole.ADMIN), postController.createPost);
 
+router.patch("/:postId", auth(UserRole.USER, UserRole.ADMIN), postController.updateMyPost);
+
 export const postRoute = router;
