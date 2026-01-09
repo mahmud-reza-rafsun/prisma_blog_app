@@ -77,7 +77,7 @@ const modarateComment = async (req: Request, res: Response) => {
         res.status(200).send(result)
     } catch (error: any) {
         res.status(400).json({
-            error: "comment update faield!!!",
+            error: error.message || "comment update faield!!!",
             details: error,
         })
     }

@@ -72,9 +72,27 @@ const getAllPostById = async (req: Request, res: Response) => {
     }
 }
 
+const getMyPost = async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+        console.log(user);
+        if (!user) {
+            throw new Error("User not found");
+        }
+        const result = await postService.getMyPost(user?.id as string);
+        res.status(200).json({ data: result })
+    } catch (error: any) {
+        res.status(400).json({
+            error: "Retrive my post faileld!!!",
+            details: error,
+        })
+    }
+}
+
 
 export const postController = {
     createPost,
     getAllPost,
-    getAllPostById
+    getAllPostById,
+    getMyPost
 }

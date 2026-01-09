@@ -109,6 +109,9 @@ const modarateComment = async (id: string, data: { status: CommentStatus }) => {
             id
         }
     });
+    if (commentData.status === data.status) {
+        throw new Error(`Your provided status (${data.status}) is already up to date`)
+    }
     return await prisma.comment.update({
         where: {
             id
