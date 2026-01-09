@@ -49,15 +49,46 @@ const deleteComment = async (req: Request, res: Response) => {
         res.send(result)
     } catch (error: any) {
         res.status(400).json({
-            error: "comment deleted!!!",
+            error: "comment delete faield!!!",
             details: error,
         })
     }
 }
 
+const updateComment = async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+        const { commentId } = req.params;
+        const result = await commentService.updateComment(commentId as string, req.body, user?.id as string)
+        res.status(200).json(result)
+    } catch (e) {
+        console.log(e)
+        res.status(400).json({
+            error: "Comment update failed!",
+            details: e
+        })
+    }
+}
+
+const modarateComment = async (req: Request, res: Response) => {
+    try {
+        const result = await commentService.modarateComment();
+        res.status(200).send(result)
+    } catch (error: any) {
+        res.status(400).json({
+            error: "comment update faield!!!",
+            details: error,
+        })
+    }
+}
+
+
+
 export const commentController = {
     createComment,
     getCommentById,
     getCommentByAuthor,
-    deleteComment
+    deleteComment,
+    updateComment,
+    modarateComment
 }
