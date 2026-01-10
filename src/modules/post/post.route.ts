@@ -15,4 +15,6 @@ router.post("/", auth(UserRole.USER, UserRole.ADMIN), postController.createPost)
 
 router.patch("/:postId", auth(UserRole.USER, UserRole.ADMIN), postController.updateMyPost);
 
+router.delete("/:postId", auth(UserRole.USER, UserRole.ADMIN), postController.deleteMyPost);
+
 export const postRoute = router;
