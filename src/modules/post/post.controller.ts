@@ -121,8 +121,22 @@ const deleteMyPost = async (req: Request, res: Response) => {
         const result = await postService.deletePost(postId as string, user.id, isAdmin);
         res.status(200).json({ data: result })
     } catch (error: any) {
+        const errorMessage = (error instanceof Error) ? error.message : "delete post faield!!"
         res.status(400).json({
-            error: "delete post faield!!!",
+            error: errorMessage,
+            details: error,
+        })
+    }
+}
+
+const getStats = async (req: Request, res: Response) => {
+    try {
+        const result = await postService.getStats();
+        res.status(200).json({ data: result })
+    } catch (error: any) {
+        const errorMessage = (error instanceof Error) ? error.message : "delete post faield!!"
+        res.status(400).json({
+            error: errorMessage,
             details: error,
         })
     }
@@ -135,5 +149,6 @@ export const postController = {
     getAllPostById,
     getMyPost,
     updateMyPost,
-    deleteMyPost
+    deleteMyPost,
+    getStats
 }
