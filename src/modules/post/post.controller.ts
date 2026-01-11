@@ -87,7 +87,7 @@ const getMyPost = async (req: Request, res: Response) => {
     }
 }
 
-const updateMyPost = async (req: Request, res: Response) => {
+const updateMyPost = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.user;
         if (!user) {
@@ -99,10 +99,7 @@ const updateMyPost = async (req: Request, res: Response) => {
         const result = await postService.updateMyPost(postId as string, req.body, user.id, isAdmin);
         res.status(200).json({ data: result })
     } catch (error: any) {
-        res.status(400).json({
-            error: "update post faield!!!",
-            details: error,
-        })
+        next(error);
     }
 }
 

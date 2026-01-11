@@ -5,6 +5,7 @@ import { auth } from "./lib/auth";
 import cors from 'cors'
 import { commentRoute } from "./modules/comment/comment.route";
 import errorHandler from "./middleware/globalErrorHandler";
+import { notFound } from "./middleware/notFound";
 
 const app: Application = express();
 app.all('/api/auth/*splat', toNodeHandler(auth));
@@ -19,11 +20,13 @@ app.use(cors({
 
 app.use('/posts', postRoute);
 app.use('/comments', commentRoute);
-app.use(errorHandler)
 
 app.get('/', (req, res) => {
     res.send("Server is on");
 });
+
+app.use(notFound)
+app.use(errorHandler)
 
 
 
